@@ -34,7 +34,6 @@
         const e = document.getElementById("product").selectedIndex;
         console.log('resourceIndex: ' + e);
         console.log('desiredAmount: ' + desired);
-
     const result = Math.ceil(parseInt(desired) / (resources[e].Output / resources[e].Time));
     resultaat.innerHTML = result 
     }
@@ -50,8 +49,7 @@
             </select><br><br>
          Amount: <input type="number" id="amount"><br><br>
          Assembler: <input type="radio" name="assemblermachine" value="machine 1" checked> Machine 1 (Grey)<br><br>
-
                     <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
                  <p>Assemblers needed:  </p><p id="resultaat"></p>
-                   
-</html>
+ </body>
+ </html>
