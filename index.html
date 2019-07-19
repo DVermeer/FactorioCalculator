@@ -6,13 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-</head>
+<script type="text/javascript">
 
+    const copperwire = { 
+        Output: 2,
+        Time: 0.5
+    }
+    const greencircuits = { 
+        Output: 1,
+        Time: 0.5
+    }
+    const science_auto = { 
+        Output: 1,
+        Time: 5
+    }
+    const resources = [
+        {id: copperwire,    Output: 2, Time: 0.5}, 
+        {id: greencircuits, Output: 1, Time: 0.5},
+        {id: science_auto,  Output: 1, Time: 5}];
+
+    function findProduct(product){
+        const getResource = resources.findIndex(resource => resource.id === 'product');
+        console.log(getResource)
+    }                 
+    function needAssembler(){
+        const desired = document.getElementById("amount").value;
+        const e = document.getElementById("product").selectedIndex;
+        console.log('resourceIndex: ' + e);
+        console.log('desiredAmount: ' + desired);
+
+    const result = Math.ceil(parseInt(desired) / (resources[e].Output / resources[e].Time));
+    resultaat.innerHTML = result 
+    }
+</script>
+</head>
 <body>
     <h1>Factorio Calculator</h1>
+        <p>How many products do you want to assemble?:</p>
+         Product: <select id="product"><br><br>
+             <option value="copperwire">Copperwire</option>
+             <option value="greencircuits">Green Circuits</option>
+             <option value="science_auto">Automation Science</option>
+            </select><br><br>
+         Amount: <input type="number" id="amount"><br><br>
+         Assembler: <input type="radio" name="assemblermachine" value="machine 1" checked> Machine 1 (Grey)<br><br>
 
-
-    <script src="script.js"></script>
-</body>
-
+                    <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
+                 <p>Assemblers needed:  </p><p id="resultaat"></p>
+                   
 </html>
