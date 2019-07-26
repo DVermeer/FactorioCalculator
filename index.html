@@ -19,13 +19,21 @@
         function gettotalIngredientsNeeded(resource, desired) {
             const inputs = Object.entries(resource.Input);
             const list = [];
+
             for (const [inputResource, count] of inputs) {
                 const totalAmount = (desired * count) / resource.Output;
                 list.push({ resource: inputResource, amount: totalAmount })
-                // console.log(inputResource + ': ' + (desired * count) / resource.Output);
             }
-            return list;
 
+            return list;
+        }
+
+        function writeTotalIngredientsList(list) {
+            for (const ingredient of list) {
+                const item = document.createElement('li');
+                item.innerHTML = `${ingredient.resource}: ${ingredient.amount}`
+                document.getElementById("ingredients").appendChild(item);
+            }
         }
 
         function needAssembler() {
@@ -45,6 +53,7 @@
             const totalIngredientsNeeded = gettotalIngredientsNeeded(selectedResource, desired);
             console.log(totalIngredientsNeeded)
 
+            writeTotalIngredientsList(totalIngredientsNeeded);
 
 
 
@@ -69,6 +78,10 @@
     <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
     <p>Assemblers needed: </p>
     <p id="resultaat"></p>
+    <h4>Ingredients:</h4>
+    <ul id="ingredients">
+    </ul>
+
 </body>
 
 </html>
