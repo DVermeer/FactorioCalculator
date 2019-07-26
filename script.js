@@ -32,10 +32,18 @@ function getResourceTitle(name) {
     const resource = resources.find(r => r.Name === name)
     return resource.title || resource.Name
 }
+function fillProductsList() {
+    for (const resource of resources) {
+        const option = document.createElement('option');
+        option.value = resource.Name
+        option.innerHTML = resource.title || resource.Name
+        document.getElementById("products").appendChild(option);
+    }
+}
 
 function needAssembler() {
     const desired = document.getElementById("amount").value;
-    const selectedResourceIndex = document.getElementById("product").selectedIndex;
+    const selectedResourceIndex = document.getElementById("products").selectedIndex;
     const selectedResource = resources[selectedResourceIndex];
 
     // Calculate needed amount assemblers           
