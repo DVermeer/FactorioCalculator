@@ -6,52 +6,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    const copperwire = { 
-        Output: 2,
-        Time: 0.5
-    }
-    const greencircuits = { 
-        Output: 1,
-        Time: 0.5
-    }
-    const science_auto = { 
-        Output: 1,
-        Time: 5
-    }
-    const resources = [
-        {id: copperwire,    Output: 2, Time: 0.5}, 
-        {id: greencircuits, Output: 1, Time: 0.5},
-        {id: science_auto,  Output: 1, Time: 5}];
+        const resources = [
+            { id: 0, Name: "ironplate", Output: 1, Time: 3.2, Input: { ore: 1 } },
+            { id: 1, Name: "gearwheel", Output: 1, Time: 0.5, Input: { ironplate: 2 } },
+            { id: 2, Name: "copperplate", Output: 1, Time: 3.2, Input: { ore: 1 } },
+            { id: 3, Name: "copperwire", Output: 2, Time: 0.5, Input: { copperplate: 1 } },
+            { id: 4, Name: "greencircuits", Output: 1, Time: 0.5, Input: { copperwire: 3, ironplate: 1 } },
+            { id: 5, Name: "science_auto", Output: 1, Time: 5.0, Input: { copperplate: 1, gearwheel: 1 } }];
 
-    function findProduct(product){
-        const getResource = resources.findIndex(resource => resource.id === 'product');
-        console.log(getResource)
-    }                 
-    function needAssembler(){
-        const desired = document.getElementById("amount").value;
-        const e = document.getElementById("product").selectedIndex;
-        console.log('resourceIndex: ' + e);
-        console.log('desiredAmount: ' + desired);
+        function needAssembler() {
+            const desired = document.getElementById("amount").value;
+            const e = document.getElementById("product").selectedIndex;
+            console.log('resource Index: ' + e);
+            console.log('resource Name: ' + resources[e].Name)
+            console.log('desiredAmount: ' + desired);
 
-    const result = Math.ceil(parseInt(desired) / (resources[e].Output / resources[e].Time));
-    resultaat.innerHTML = result 
-    }
-</script>
+            // Calculate needed amount assemblers           
+            const result = Math.ceil(parseInt(desired) / (resources[e].Output / resources[e].Time));
+            resultaat.innerHTML = result;
+            console.log(result + ' Assemblers needed for ' + desired + ' ' + resources[e].Name)
+
+            console.log(resources[e].Input);
+            const Input = resources[e].Input;
+
+            // Determine ingredient amounts
+            const inputs = Object.entries(Input);
+            for (const [resource, count] of inputs) {
+                console.log(resource + ': ' + (desired * count) / resources[e].Output); // logs the needed amount, no focus on storing it for further use.
+            }
+
+            var i; // test for-loop, werkt niet naar behoren
+            var inputAmountsloop = 0;
+            for (i = 0, i < inputs.length; i++;) {
+                inputAmountsloop[i] = (desired * Input[i].value) / resources[e].Output
+                console.log('forloop ' + inputAmountsloop)
+            }
+
+            function inputAmount() { // niet functioneel
+                const inputAmount = (desired * Input.value) / resources[e].Output;
+                console.log('InputAmount: ' + inputAmount)
+            }
+
+
+        }
+    </script>
 </head>
+
 <body>
     <h1>Factorio Calculator</h1>
-        <p>How many products do you want to assemble?:</p>
-         Product: <select id="product"><br><br>
-             <option value="copperwire">Copperwire</option>
-             <option value="greencircuits">Green Circuits</option>
-             <option value="science_auto">Automation Science</option>
-            </select><br><br>
-         Amount: <input type="number" id="amount"><br><br>
-         Assembler: <input type="radio" name="assemblermachine" value="machine 1" checked> Machine 1 (Grey)<br><br>
+    <p>How many products do you want to assemble?:</p>
+    Product: <select id="product">
+        <option value="ironplate">Iron plate</option>
+        <option value="gearwheel">Iron Gear wheel</option>
+        <option value="copperplate">Copper plate</option>
+        <option value="copperwire">Copperwire</option>
+        <option value="greencircuits">Green Circuits</option>
+        <option value="science_auto">Automation Science</option>
 
-                    <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
-                 <p>Assemblers needed:  </p><p id="resultaat"></p>
-                   
+    </select><br><br>
+    Amount: <input type="number" id="amount"><br><br>
+    Assembler: <input type="radio" name="assemblermachine" value="machine 1" checked> Machine 1 (Grey)<br><br>
+    <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
+    <p>Assemblers needed: </p>
+    <p id="resultaat"></p>
+</body>
+
 </html>
