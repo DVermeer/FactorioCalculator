@@ -12,8 +12,8 @@
             { id: 0, Name: "ironplate", Output: 1, Time: 3.2, Input: { ore: 1 } },
             { id: 1, Name: "gearwheel", Output: 1, Time: 0.5, Input: { ironplate: 2 } },
             { id: 2, Name: "copperplate", Output: 1, Time: 3.2, Input: { ore: 1 } },
-            { id: 3, Name: "copperwire", Output: 2, Time: 0.5, Input: { copperplate: 1 } },
-            { id: 4, Name: "greencircuits", Output: 1, Time: 0.5, Input: { copperwire: 3, ironplate: 1 } },
+            { id: 3, Name: "copperwire", title: 'Copper Cable', Output: 2, Time: 0.5, Input: { copperplate: 1 } },
+            { id: 4, Name: "greencircuits", title: 'Green Circuits', Output: 1, Time: 0.5, Input: { copperwire: 3, ironplate: 1 } },
             { id: 5, Name: "science_auto", Output: 1, Time: 5.0, Input: { copperplate: 1, gearwheel: 1 } }];
 
         function gettotalIngredientsNeeded(resource, desired) {
@@ -31,9 +31,15 @@
         function writeTotalIngredientsList(list) {
             for (const ingredient of list) {
                 const item = document.createElement('li');
-                item.innerHTML = `${ingredient.resource}: ${ingredient.amount}`
+                const resourceTitle = getResourceTitle(ingredient.resource)
+                item.innerHTML = `${resourceTitle}: ${ingredient.amount}`
                 document.getElementById("ingredients").appendChild(item);
             }
+        }
+
+        function getResourceTitle(name) {
+            const resource = resources.find(r => r.Name === name)
+            return resource.title || resource.Name
         }
 
         function needAssembler() {
@@ -73,7 +79,7 @@
         <option value="science_auto">Automation Science</option>
 
     </select><br><br>
-    Amount: <input type="number" id="amount"><br><br>
+    Amount: <input type="number" id="amount" value="24"><br><br>
     Assembler: <input type="radio" name="assemblermachine" value="machine 1" checked> Machine 1 (Grey)<br><br>
     <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
     <p>Assemblers needed: </p>
