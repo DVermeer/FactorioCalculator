@@ -18,10 +18,13 @@
 
         function gettotalIngredientsNeeded(resource, desired) {
             const inputs = Object.entries(resource.Input);
+            const list = [];
             for (const [inputResource, count] of inputs) {
-                console.log(inputResource + ': ' + (desired * count) / resource.Output);
+                const totalAmount = (desired * count) / resource.Output;
+                list.push({ resource: inputResource, amount: totalAmount })
+                // console.log(inputResource + ': ' + (desired * count) / resource.Output);
             }
-            return []
+            return list;
 
         }
 
@@ -40,6 +43,7 @@
 
             // Determine ingredient amounts
             const totalIngredientsNeeded = gettotalIngredientsNeeded(selectedResource, desired);
+            console.log(totalIngredientsNeeded)
 
 
 
