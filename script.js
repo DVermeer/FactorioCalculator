@@ -1,11 +1,11 @@
 
 const resources = [
-    { id: 0, Name: "ironplate", Output: 1, Time: 3.2, Input: { ore: 1 } },
-    { id: 1, Name: "gearwheel", Output: 1, Time: 0.5, Input: { ironplate: 2 } },
-    { id: 2, Name: "copperplate", Output: 1, Time: 3.2, Input: { ore: 1 } },
+    { id: 0, Name: "ironplate", title: 'Iron plate', Output: 1, Time: 3.2, Input: { ore: 1 } },
+    { id: 1, Name: "gearwheel", title: 'Gear wheel', Output: 1, Time: 0.5, Input: { ironplate: 2 } },
+    { id: 2, Name: "copperplate", title: 'Copper plate', Output: 1, Time: 3.2, Input: { ore: 1 } },
     { id: 3, Name: "copperwire", title: 'Copper Cable', Output: 2, Time: 0.5, Input: { copperplate: 1 } },
     { id: 4, Name: "greencircuits", title: 'Green Circuits', Output: 1, Time: 0.5, Input: { copperwire: 3, ironplate: 1 } },
-    { id: 5, Name: "science_auto", Output: 1, Time: 5.0, Input: { copperplate: 1, gearwheel: 1 } }];
+    { id: 5, Name: "science_auto", title: 'Automation Science', Output: 1, Time: 5.0, Input: { copperplate: 1, gearwheel: 1 } }];
 
 function gettotalIngredientsNeeded(resource, desired) {
     const inputs = Object.entries(resource.Input);
@@ -29,6 +29,7 @@ function writeTotalIngredientsList(list) {
 }
 
 function getResourceTitle(name) {
+    console.log(name)
     const resource = resources.find(r => r.Name === name)
     return resource.title || resource.Name
 }
@@ -41,6 +42,19 @@ function fillProductsList() {
     }
 }
 
+function resetForm() {
+    document.getElementById("ingredients").innerHTML = "";
+}
+
+// functie nog verder afmaken, check if endproduct 
+function findIngredientInResource(ingredients) {
+    for (const ingredient of ingredients) {
+        console.log(ingredient)
+        const resource = resources.find(r => r.name === ingredient);
+        console.log(resource)
+        return resource.Input
+    }
+}
 function needAssembler() {
     const desired = document.getElementById("amount").value;
     const selectedResourceIndex = document.getElementById("products").selectedIndex;
@@ -54,5 +68,7 @@ function needAssembler() {
     const totalIngredientsNeeded = gettotalIngredientsNeeded(selectedResource, desired);
     console.log(totalIngredientsNeeded)
 
+    resetForm();
     writeTotalIngredientsList(totalIngredientsNeeded);
+    findIngredientInResource(totalIngredientsNeeded);
 }
