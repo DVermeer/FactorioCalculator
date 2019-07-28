@@ -1,34 +1,42 @@
 
 const resources = [
-    { id: 0, Name: "ironplate", title: 'Iron plate', Output: 1, Time: 3.2, Input: { ironore: 2 } }, //for test, input is wrong, ore is 1 
+    { id: 0, Name: "ironplate", title: 'Iron plate', Output: 1, Time: 3.2 },
     { id: 1, Name: "gearwheel", title: 'Gear wheel', Output: 1, Time: 0.5, Input: { ironplate: 2 } },
-    { id: 2, Name: "copperplate", title: 'Copper plate', Output: 1, Time: 3.2, Input: { copperore: 1 } },
-    { id: 3, Name: "copperwire", title: 'Copper Cable', Output: 2, Time: 0.5, Input: { copperplate: 1 } },
-    { id: 4, Name: "greencircuits", title: 'Green Circuits', Output: 1, Time: 0.5, Input: { copperwire: 3, ironplate: 1 } },
+    { id: 2, Name: "copperplate", title: 'Copper plate', Output: 1, Time: 3.2 },
+    { id: 3, Name: "copperwire", title: 'Copper cable', Output: 2, Time: 0.5, Input: { copperplate: 1 } },
+    { id: 4, Name: "greencircuit", title: 'Green Circuit', Output: 1, Time: 0.5, Input: { copperwire: 3, ironplate: 1 } },
     { id: 5, Name: "science_auto", title: 'Automation Science', Output: 1, Time: 5.0, Input: { copperplate: 1, gearwheel: 1 } },
-    { id: 6, Name: "assembler1", title: "Assembling Machine 1", Output: 1, Time: 0.5, Input: { greencircuits: 3, gearwheel: 5, ironplate: 9 } },
-    { id: 7, Name: "steelplate", title: "Steel plate", Output: 1, Time: 16, Input: { ironplate: 5 } }
+    { Name: "science_logistics", title: "Logistics Science", Output: 1, Time: 6, Input: { inserter: 1, transportbelt: 1 } },
+    { id: 6, Name: "assembler1", title: "Assembling Machine 1", Output: 1, Time: 0.5, Input: { greencircuit: 3, gearwheel: 5, ironplate: 9 } },
+    { id: 7, Name: "steelplate", title: "Steel plate", Output: 1, Time: 16, Input: { ironplate: 5 } },
+    { id: 8, Name: "plasticbar", title: "Plastic bar", Output: 2, Time: 1 },
+    { id: 9, Name: "redcircuit", title: "Advanced circuit", Output: 1, Time: 6, Input: { copperwire: 4, greencircuit: 2, plasticbar: 2 } },
+    { id: 10, Name: "inserter", title: "Inserter", Output: 1, Time: 0.5, Input: { ironplate: 1, greencircuit: 1, gearwheel: 1 } },
+    { id: 11, Name: "transportbelt", title: "Transport belt", Output: 2, Time: 0.5, Input: { gearwheel: 1, ironplate: 1 } }
 ];
 
 
 function getTotalIngredientsNeeded(resource, desired) {
-    const inputs = Object.entries(resource.Input);
-    //add; if resource.Input is undefined return (resource, desire)
-    const list = [];
-
-    for (const [inputResource, count] of inputs) {
-        const totalAmount = (desired * count) / resource.Output;
-        list.push({ resource: inputResource, amount: totalAmount })
+    var list = [];
+    if (resource.Input) {
+        const inputs = Object.entries(resource.Input);
+        for (const [inputResource, count] of inputs) {
+            const totalAmount = (desired * count) / resource.Output;
+            list.push({ resource: inputResource, amount: totalAmount })
+        }
+    } else {
+        list = { resource: resource.Name, amount: desired };
     }
     return list;
 }
 
-function writeTotalIngredientsList(list) {
+
+function writeTotalIngredientsList(list, listID) {
     for (const ingredient of list) {
         const item = document.createElement('li');
         const resourceTitle = getResourceTitle(ingredient.resource)
         item.innerHTML = `${resourceTitle}: ${ingredient.amount}`
-        document.getElementById("ingredients").appendChild(item);
+        document.getElementById(listID).appendChild(item);
     }
 }
 
@@ -48,6 +56,7 @@ function fillProductsList() {
 
 function resetForm() {
     document.getElementById("ingredients").innerHTML = "";
+    document.getElementById("totalRaw").innerHTML = "";
 }
 
 function calculateAssembler(resource, desired) {
@@ -55,13 +64,16 @@ function calculateAssembler(resource, desired) {
     //add; modifier for selected assembler machine 
     return result;
 }
+function sumSameResource(list) {
+    // create function for adding amount of similar resources
+}
 
 function findIngredientInResource(ingredients) {
     var totalRaw = [];
     for (const ingredient of ingredients) {
-        const resours = resources.find(r => r.Name === ingredient.resource);
+        const resource = resources.find(r => r.Name === ingredient.resource);
         const desired = ingredient.amount;
-        const raw = getTotalIngredientsNeeded(resours, desired);
+        const raw = getTotalIngredientsNeeded(resource, desired);
         totalRaw = totalRaw.concat(raw);
     }
     return totalRaw
@@ -80,7 +92,7 @@ function needAssembler() {
     const totalIngredientsNeeded = getTotalIngredientsNeeded(selectedResource, desired);
 
     resetForm();
-    writeTotalIngredientsList(totalIngredientsNeeded);
+    writeTotalIngredientsList(totalIngredientsNeeded, "ingredients");
     const totalRaw = findIngredientInResource(totalIngredientsNeeded);
-    console.log(totalRaw);
+    writeTotalIngredientsList(totalRaw, "totalRaw");
 }
