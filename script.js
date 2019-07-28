@@ -36,6 +36,7 @@ function getResourceTitle(name) {
     const resource = resources.find(r => r.Name === name)
     return resource.title || resource.Name
 }
+
 function fillProductsList() {
     for (const resource of resources) {
         const option = document.createElement('option');
@@ -55,20 +56,17 @@ function calculateAssembler(resource, desired) {
     return result;
 }
 
-// functie nog verder afmaken, check if endproduct 
 function findIngredientInResource(ingredients) {
-    const totalRaw = []
+    var totalRaw = [];
     for (const ingredient of ingredients) {
         const resours = resources.find(r => r.Name === ingredient.resource);
         const desired = ingredient.amount;
         const raw = getTotalIngredientsNeeded(resours, desired);
-        console.log(raw) // combine raws to total
-        totalRaw.push({ raw }); // raw.resource = undefined
+        totalRaw = totalRaw.concat(raw);
     }
-    console.log(totalRaw)
     return totalRaw
-
 }
+
 function needAssembler() {
     const desired = document.getElementById("amount").value;
     const selectedResourceIndex = document.getElementById("products").selectedIndex;
@@ -84,4 +82,5 @@ function needAssembler() {
     resetForm();
     writeTotalIngredientsList(totalIngredientsNeeded);
     const totalRaw = findIngredientInResource(totalIngredientsNeeded);
+    console.log(totalRaw);
 }
