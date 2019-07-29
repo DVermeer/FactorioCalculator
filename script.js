@@ -15,7 +15,6 @@ const resources = [
     { id: 11, Name: "transportbelt", title: "Transport belt", Output: 2, Time: 0.5, Input: { gearwheel: 1, ironplate: 1 } }
 ];
 
-
 function getTotalIngredientsNeeded(resource, desired) {
     var list = [];
     if (resource.Input) {
@@ -30,12 +29,16 @@ function getTotalIngredientsNeeded(resource, desired) {
     return list;
 }
 
-
 function writeTotalIngredientsList(list, listID) {
     for (const ingredient of list) {
         const item = document.createElement('li');
         const resourceTitle = getResourceTitle(ingredient.resource)
-        item.innerHTML = `${resourceTitle}: ${ingredient.amount}`
+        if (ingredient.belt) {
+            item.innerHTML = `${resourceTitle}: ${ingredient.amount}, need a ${ingredient.belt}`
+        }
+        else {
+            item.innerHTML = `${resourceTitle}: ${ingredient.amount}`
+        }
         document.getElementById(listID).appendChild(item);
     }
 }
@@ -56,6 +59,7 @@ function fillProductsList() {
 
 function resetForm() {
     document.getElementById("ingredients").innerHTML = "";
+    document.getElementById("secondingredients").innerHTML = "";
     document.getElementById("totalRaw").innerHTML = "";
 }
 
@@ -64,27 +68,47 @@ function calculateAssembler(resource, desired) {
     //add; modifier for selected assembler machine 
     return result;
 }
-function sumSameResource(list) {
-    // create function for adding amount of similar resources - unfinished
-    var sameResource = [];
-    for (var i = 0; i < list.length; i++) {
-        console.log(list[i].resource)
-        if (sameResource.indexOf(list[i][0]) < 0) {
-            sameResource.push(list[i][1]);
-        }
+
+function determineTransportbelt(amount) {
+    // also include half of belt 
+    var neededBelt;
+
+    if (amount <= 15) {
+        neededBelt = "yellow Transport Belt";
     }
-    sameResource = sameResource.map(a => [a, 0]);
-    for (i = 0; i < list.length; i++) {
-        for (var j = 0; j < sameResource.length; j++) {
-            if (list[i][0] === sameResource[j][0]) {
-                sameResource[j][1] += list[i][1];
-            }
-        }
+    else if (15 < amount <= 30) {
+        neededBelt = "red Transport belt";
     }
-    return sameResource;
+    else if (30 < amount <= 45) {
+        neededBelt = "blue Transport belt";
+    }
+    return neededBelt;
 }
 
+function addBeltToResources(list) {
+    for (const resource of list) {
+        const Belt = determineTransportbelt(resource.amount);
+        resource.belt = Belt;
+    }
+    return list;
+}
 
+function sumSameResource(list) {
+    // create function for adding amount of similar resources - unfinished
+    var holder = {};
+    list.forEach(function (d) {
+        if (holder.hasOwnProperty(d.resource)) {
+            holder[d.resource] = holder[d.resource] + d.amount;
+        } else {
+            holder[d.resource] = d.amount
+        }
+    });
+    var list2 = [];
+    for (var prop in holder) {
+        list2.push({ resource: prop, amount: Math.ceil(holder[prop]) });
+    }
+    return list2
+}
 
 function findIngredientInResource(ingredients) {
     var totalRaw = [];
@@ -101,9 +125,10 @@ function needAssembler() {
     const desired = document.getElementById("amount").value;
     const selectedResourceIndex = document.getElementById("products").selectedIndex;
     const selectedResource = resources[selectedResourceIndex];
-
+    const productionRate = document.querySelector('input[name="craftspeed"]:checked').value;
+    const selectedAssemblerMod = document.querySelector('input[name="assemblermachine"]:checked').value
     // Calculate needed amount assemblers           
-    const result = Math.ceil(parseInt(desired) / (selectedResource.Output / selectedResource.Time));
+    const result = calculateAssembler(selectedResource, desired)
     resultaat.innerHTML = result;
 
     // Determine ingredient amounts
@@ -111,9 +136,10 @@ function needAssembler() {
 
     resetForm();
     writeTotalIngredientsList(totalIngredientsNeeded, "ingredients");
-    const totalRaw = findIngredientInResource(totalIngredientsNeeded);
-    writeTotalIngredientsList(totalRaw, "totalRaw");
-    console.log(totalRaw)
-    console.log(sumSameResource(totalRaw));
+    const secondIngredients = addBeltToResources(sumSameResource(findIngredientInResource(totalIngredientsNeeded)));
+    writeTotalIngredientsList(secondIngredients, "secondingredients");
 
+    const totalRaw = sumSameResource(findIngredientInResource(findIngredientInResource(findIngredientInResource(totalIngredientsNeeded))));
+    // make function for above statement 
+    writeTotalIngredientsList(totalRaw, "totalRaw");
 }

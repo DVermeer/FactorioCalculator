@@ -10,7 +10,7 @@
 
 <body onload="fillProductsList();">
     <h1>Factorio Calculator</h1>
-    <p>How many products do you want to assemble?:</p>
+    <h5>How many products do you want to assemble?</h5>
     Product: <select id="products">
         <!-- <option value="ironplate">Iron plate</option>
         <option value="gearwheel">Iron Gear wheel</option>
@@ -20,17 +20,25 @@
         <option value="science_auto">Automation Science</option> -->
 
     </select><br><br>
-    Amount: <input type="number" id="amount" value="24"><br><br>
-    Assembler: <input type="radio" name="assemblermachine" value="machine 1" checked> Machine 1 (Grey)<br><br>
-    <input type="button" id="button" value="Calculate" onclick="needAssembler();"><br><br>
-    <p>Assemblers needed: </p>
+    Amount: <input type="number" id="amount" value="12"><br><br>
+    Production rate:
+    <input type="radio" name="craftspeed" value="p/sec" checked> per/second<br>
+    <!-- <input type="radio" name="craftspeed" value="p/min"> per/minute <br> <br> -->
+
+    Assembler:
+    <input type="radio" name="assemblermachine" value="0.5" checked> Machine 1 (Grey)<br><br>
+    <!-- <input type="radio" name="assemblermachine" value="machine 2"> Machine 2 (Grey)<br><br> -->
+
+    <input type="button" id="button" value="Fabricate" onclick="needAssembler();"><br>
+    <h4>Assemblers needed: </h4>
     <p id="resultaat"></p>
     <h4>Ingredients:</h4>
     <ul id="ingredients">
     </ul>
-    <!-- <h4>Ingredients of Ingredients:</h4>
-    <ul id="ingredients">
-    </ul> -->
+
+    <h4>For this you need the following:</h4>
+    <ul id="secondingredients">
+    </ul>
 
     <h4>Total Raw:</h4>
     <ul id="totalRaw">
