@@ -29,6 +29,10 @@ function getTotalIngredientsNeeded(resource, desired) {
     return list;
 }
 
+function loadResourceIcon(resource) {
+    const filename = "resource_images/" + resource + ".png"
+    document.getElementById("selectedResource").src = [filename];
+}
 function writeTotalIngredientsList(list, listID) {
     for (const ingredient of list) {
         const item = document.createElement('li');
@@ -131,6 +135,7 @@ function needAssembler() {
     const result = calculateAssembler(selectedResource, desired)
     resultaat.innerHTML = result;
 
+    loadResourceIcon(selectedResource.Name)
     // Determine ingredient amounts
     const totalIngredientsNeeded = getTotalIngredientsNeeded(selectedResource, desired);
 
