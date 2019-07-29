@@ -65,8 +65,26 @@ function calculateAssembler(resource, desired) {
     return result;
 }
 function sumSameResource(list) {
-    // create function for adding amount of similar resources
+    // create function for adding amount of similar resources - unfinished
+    var sameResource = [];
+    for (var i = 0; i < list.length; i++) {
+        console.log(list[i].resource)
+        if (sameResource.indexOf(list[i][0]) < 0) {
+            sameResource.push(list[i][1]);
+        }
+    }
+    sameResource = sameResource.map(a => [a, 0]);
+    for (i = 0; i < list.length; i++) {
+        for (var j = 0; j < sameResource.length; j++) {
+            if (list[i][0] === sameResource[j][0]) {
+                sameResource[j][1] += list[i][1];
+            }
+        }
+    }
+    return sameResource;
 }
+
+
 
 function findIngredientInResource(ingredients) {
     var totalRaw = [];
@@ -95,4 +113,7 @@ function needAssembler() {
     writeTotalIngredientsList(totalIngredientsNeeded, "ingredients");
     const totalRaw = findIngredientInResource(totalIngredientsNeeded);
     writeTotalIngredientsList(totalRaw, "totalRaw");
+    console.log(totalRaw)
+    console.log(sumSameResource(totalRaw));
+
 }
