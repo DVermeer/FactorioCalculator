@@ -1,15 +1,32 @@
 body {
   background-color: powderblue;
 }
-h1 {
-  color: rgba(173, 118, 15, 0.548);
+@font-face {
     font-family: Sylar Stencil;
-    src: url('Sylar-Stencil.ttf') format('truetype');
-    url('Sylar-Stencil.woff2') format('woff2'),
-        url('Sylar-Stencil.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
+    src: url('Sylar-Stencil.ttf');
 }
+img.wiel {
+  position: absolute;
+  left: 100px;
+  top: 30px;
+}
+h1 {
+  color: rgba(138, 80, 14, 0.705);
+    font-family: Sylar Stencil;
+    src: url('/Sylar-Stencil.ttf') format('truetype');
+    src: url('Sylar-Stencil.woff2') format('woff2');
+    src: url('Sylar-Stencil.woff') format('woff');
+    font-weight: bold;
+    font-size: 50px;
+    letter-spacing: 3px
+    position: absolute;
+    left: 100px;
+}
+input[type="radio"] {
+    margin-top: -1px;
+    vertical-align: middle;
+    
+  }
 
 
 p {

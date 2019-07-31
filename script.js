@@ -37,12 +37,16 @@ function writeTotalIngredientsList(list, listID) {
     for (const ingredient of list) {
         const item = document.createElement('li');
         const resourceTitle = getResourceTitle(ingredient.resource)
+        const filename = "resource_images/" + ingredient.resource + ".png"
         if (ingredient.belt) {
             item.innerHTML = `${resourceTitle}: ${ingredient.amount}, need a ${ingredient.belt}`
         }
         else {
-            item.innerHTML = `${resourceTitle}: ${ingredient.amount}`
+
+            item.innerHTML = "<img src=" + filename + ">" + resourceTitle + ":" + ingredient.amount
         }
+
+        // item.append('<img src="'filename'"/>')
         document.getElementById(listID).appendChild(item);
     }
 }
@@ -67,8 +71,8 @@ function resetForm() {
     document.getElementById("totalRaw").innerHTML = "";
 }
 
-function calculateAssembler(resource, desired) {
-    const result = Math.ceil(parseInt(desired) / (resource.Output / resource.Time));
+function calculateAssembler(resource, desired, modifier) {
+    const result = Math.ceil((desired / (resource.Output / resource.Time)) / modifier);
     //add; modifier for selected assembler machine 
     return result;
 }
@@ -126,18 +130,19 @@ function findIngredientInResource(ingredients) {
 }
 
 function needAssembler() {
-    const desired = document.getElementById("amount").value;
+    const amount = document.getElementById("amount").value;
     const selectedResourceIndex = document.getElementById("products").selectedIndex;
     const selectedResource = resources[selectedResourceIndex];
     const productionRate = document.querySelector('input[name="craftspeed"]:checked').value;
+    const desired = amount / productionRate;
     const selectedAssemblerMod = document.querySelector('input[name="assemblermachine"]:checked').value
     // Calculate needed amount assemblers           
-    const result = calculateAssembler(selectedResource, desired)
+    const result = calculateAssembler(selectedResource, desired, selectedAssemblerMod)
     resultaat.innerHTML = result;
 
     loadResourceIcon(selectedResource.Name)
     // Determine ingredient amounts
-    const totalIngredientsNeeded = getTotalIngredientsNeeded(selectedResource, desired);
+    const totalIngredientsNeeded = getTotalIngredientsNeeded(selectedResource, amount);
 
     resetForm();
     writeTotalIngredientsList(totalIngredientsNeeded, "ingredients");

@@ -10,25 +10,18 @@
 </head>
 
 <body onload="fillProductsList();">
-    <h1>Factorio Calculator</h1>
+    <img id="wiel" src="factorio_logo.png" width="70px">
+    <h1 id="header">Factorio Calculator</h1>
     <h5>How many products do you want to assemble?</h5>
-    Product: <select id="products">
-        <!-- <option value="ironplate">Iron plate</option>
-        <option value="gearwheel">Iron Gear wheel</option>
-        <option value="copperplate">Copper plate</option>
-        <option value="copperwire">Copperwire</option>
-        <option value="greencircuits" selected>Green Circuits</option>
-        <option value="science_auto">Automation Science</option> -->
-
-    </select><br><br>
+    Product: <select id="products"> </select><br><br>
     Amount: <input type="number" id="amount" value="12"><br><br>
-    Production rate:
-    <input type="radio" name="craftspeed" value="p/sec" checked> per/second<br>
-    <!-- <input type="radio" name="craftspeed" value="p/min"> per/minute <br> <br> -->
+    Production rate:<br>
+    <input type="radio" name="craftspeed" value="1" checked> per/second<br>
+    <input type="radio" name="craftspeed" value="60"> per/minute <br> <br>
 
-    Assembler:
-    <input type="radio" name="assemblermachine" value="0.5" checked> Machine 1 (Grey)<br><br>
-    <!-- <input type="radio" name="assemblermachine" value="machine 2"> Machine 2 (Grey)<br><br> -->
+    Assembler:<br>
+    <input type="radio" name="assemblermachine" value="0.5" checked> Machine 1 (Grey)<br>
+    <input type="radio" name="assemblermachine" value="0.75"> Machine 2 (Blue)<br><br>
 
     <input type="button" id="button" value="Fabricate" onclick="needAssembler();"><br><BR>
     <img id="selectedResource" src="" />
