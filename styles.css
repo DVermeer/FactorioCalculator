@@ -1,0 +1,17 @@
+body {
+  background-color: powderblue;
+}
+h1 {
+  color: rgba(173, 118, 15, 0.548);
+    font-family: Sylar Stencil;
+    src: url('Sylar-Stencil.ttf') format('truetype');
+    url('Sylar-Stencil.woff2') format('woff2'),
+        url('Sylar-Stencil.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+p {
+  color: red;
+}
